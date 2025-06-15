@@ -1,0 +1,11 @@
+default: &default
+  adapter: postgresql
+  encoding: unicode
+  host: localhost
+  pool: 5
+  username: root
+  password: root
+
+development:
+  <<: *default
+  database: expense_tracker_dev

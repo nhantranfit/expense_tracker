@@ -1,0 +1,12 @@
+<h2>📄 Chi tiết chi tiêu</h2>
+
+<p><strong>Ngày chi:</strong> <%= @expense.spent_on.strftime("%d-%m-%Y") %></p>
+<p><strong>Món:</strong> <%= @expense.title %></p>
+<p><strong>Số tiền:</strong> <%= number_with_delimiter(@expense.amount, delimiter: ",") %> ₫</p>
+<p><strong>Ghi chú:</strong> <%= @expense.note.presence || "Không có" %></p>
+
+<hr>
+
+<%= link_to "✏️ Sửa", edit_expense_path(@expense) %> |
+<%= link_to "🗑️ Xoá", expense_path(@expense), method: :delete, data: { confirm: "Bạn có chắc muốn xoá chi tiêu này?" } %> |
+<%= link_to "⬅ Quay lại danh sách", expenses_path %>

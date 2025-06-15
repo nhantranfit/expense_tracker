@@ -1,0 +1,36 @@
+<h2>Danh sách chi tiêu</h2>
+<%= link_to "➕ Thêm chi tiêu", new_expense_path %>
+
+<% @grouped_expenses.each do |date, expenses| %>
+  <h3>Ngày: <%= date.strftime("%d-%m-%Y") %></h3>
+
+  <table border="1" cellpadding="6" cellspacing="0" style="margin-bottom: 1em; width: 100%;">
+    <thead>
+      <tr>
+        <th>Món</th>
+        <th>Số tiền</th>
+        <th>Ghi chú</th>
+        <th>Hành động</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% total = 0 %>
+      <% expenses.each do |expense| %>
+        <% total += expense.amount %>
+        <tr>
+          <td><%= expense.title %></td>
+          <td><%= number_with_delimiter(expense.amount, delimiter: ",") %> ₫</td>
+          <td><%= expense.note %></td>
+          <td>
+            <%= link_to "✏️ Sửa", edit_expense_path(expense) %> |
+            <%= button_to "🗑️ Xoá", expense_path(expense), method: :delete, data: { turbo: false, confirm: "Bạn chắc không?" } %>
+          </td>
+        </tr>
+      <% end %>
+      <tr style="font-weight: bold; background-color: #f0f0f0;">
+        <td colspan="1">Tổng cộng:</td>
+        <td colspan="2"><%= number_with_delimiter(total, delimiter: ",") %> ₫</td>
+      </tr>
+    </tbody>
+  </table>
+<% end %>

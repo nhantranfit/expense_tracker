@@ -1,0 +1,37 @@
+<%= form_with(model: expense, local: true) do |form| %>
+  <% if expense.errors.any? %>
+    <div style="color: red;">
+      <h3><%= pluralize(expense.errors.count, "lỗi") %>:</h3>
+      <ul>
+        <% expense.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= form.label :spent_on, "Ngày chi tiêu" %><br>
+    <%= form.date_field :spent_on %>
+  </div>
+
+  <div>
+    <%= form.label :title, "Món" %><br>
+    <%= form.text_field :title %>
+  </div>
+
+  <div>
+    <%= form.label :amount, "Số tiền (₫)" %><br>
+    <%= form.number_field :amount, step: 1000 %>
+  </div>
+
+  <div>
+    <%= form.label :note, "Ghi chú" %><br>
+    <%= form.text_area :note, rows: 3 %>
+  </div>
+
+  <div style="margin-top: 1em;">
+    <%= form.submit %>
+    <%= link_to "⬅ Quay lại", expenses_path %>
+  </div>
+<% end %>
