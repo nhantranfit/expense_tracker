@@ -1,36 +1,54 @@
-<h2>Danh sách chi tiêu</h2>
-<%= link_to "➕ Thêm chi tiêu", new_expense_path %>
+<div class="max-w-5xl mx-auto p-6 bg-gray-900 min-h-screen text-white">
+  <h2 class="text-3xl font-bold mb-6 text-orange-400">Danh sách chi tiêu</h2>
 
-<% @grouped_expenses.each do |date, expenses| %>
-  <h3>Ngày: <%= date.strftime("%d-%m-%Y") %></h3>
+  <%= link_to "➕ Thêm chi tiêu", new_expense_path,
+      class: "inline-block mb-6 bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded shadow" %>
 
-  <table border="1" cellpadding="6" cellspacing="0" style="margin-bottom: 1em; width: 100%;">
-    <thead>
-      <tr>
-        <th>Món</th>
-        <th>Số tiền</th>
-        <th>Ghi chú</th>
-        <th>Hành động</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% total = 0 %>
-      <% expenses.each do |expense| %>
-        <% total += expense.amount %>
-        <tr>
-          <td><%= expense.title %></td>
-          <td><%= number_with_delimiter(expense.amount, delimiter: ",") %> ₫</td>
-          <td><%= expense.note %></td>
-          <td>
-            <%= link_to "✏️ Sửa", edit_expense_path(expense) %> |
-            <%= button_to "🗑️ Xoá", expense_path(expense), method: :delete, data: { turbo: false, confirm: "Bạn chắc không?" } %>
-          </td>
-        </tr>
-      <% end %>
-      <tr style="font-weight: bold; background-color: #f0f0f0;">
-        <td colspan="1">Tổng cộng:</td>
-        <td colspan="2"><%= number_with_delimiter(total, delimiter: ",") %> ₫</td>
-      </tr>
-    </tbody>
-  </table>
-<% end %>
+  <% @grouped_expenses.each do |date, expenses| %>
+    <div class="mb-10">
+      <h3 class="text-xl font-semibold text-white mb-3">📅 Ngày: <%= date.strftime("%d-%m-%Y") %></h3>
+
+      <div class="overflow-x-auto rounded">
+        <table class="min-w-full border border-gray-700 bg-gray-800 rounded shadow-md">
+          <thead>
+            <tr class="bg-gray-700 text-orange-300 uppercase text-sm">
+              <th class="px-4 py-2 text-left border-b border-gray-600">Món</th>
+              <th class="px-4 py-2 text-left border-b border-gray-600">Số tiền</th>
+              <th class="px-4 py-2 text-left border-b border-gray-600">Ghi chú</th>
+              <th class="px-4 py-2 text-left border-b border-gray-600">Hành động</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% total = 0 %>
+            <% expenses.each do |expense| %>
+              <% total += expense.amount %>
+              <tr class="hover:bg-gray-700 transition-colors duration-200">
+                <td class="px-4 py-2 border-b border-gray-700"><%= expense.title %></td>
+                <td class="px-4 py-2 border-b border-gray-700 text-orange-300 font-medium">
+                  <%= number_with_delimiter(expense.amount, delimiter: ",") %> ₫
+                </td>
+                <td class="px-4 py-2 border-b border-gray-700"><%= expense.note %></td>
+                <td class="px-4 py-2 border-b border-gray-700 text-sm">
+                  <div class="flex items-center space-x-3">
+                    <%= link_to "✏️ Sửa", edit_expense_path(expense),
+                        class: "text-orange-400 hover:underline" %>
+
+                    <%= button_to "🗑️ Xoá", expense_path(expense),
+                        method: :delete,
+                        data: { turbo: false, confirm: "Bạn chắc không?" },
+                        class: "text-red-400 hover:underline", form: { class: "inline" } %>
+                  </div>
+                </td>
+              </tr>
+            <% end %>
+            <tr class="bg-gray-700 font-semibold">
+              <td class="px-4 py-2">Tổng cộng:</td>
+              <td class="px-4 py-2 text-orange-300"><%= number_with_delimiter(total, delimiter: ",") %> ₫</td>
+              <td colspan="2"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  <% end %>
+</div>

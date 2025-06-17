@@ -29,7 +29,7 @@ class ExpensesController < ApplicationController
     if @expense.update(expense_params)
       redirect_to expenses_path, notice: "Đã cập nhật chi tiêu."
     else
-      render :edit
+      render :edit, status: :unprocessable_entity
     end
   end
 

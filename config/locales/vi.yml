@@ -1,0 +1,37 @@
+vi:
+  hello: "Xin chào"
+  activerecord:
+    models:
+      expense: "Chi tiêu"
+    attributes:
+      expense:
+        spent_on: "Ngày chi tiêu"
+        title: "Tên món"
+        amount: "Số tiền"
+        note: "Ghi chú"
+
+  errors:
+    format: "%{attribute} %{message}"
+    messages:
+      inclusion: "không có trong danh sách"
+      exclusion: "đã bị cấm"
+      invalid: "không hợp lệ"
+      confirmation: "không khớp với %{attribute}"
+      accepted: "phải được chấp nhận"
+      empty: "không được để trống"
+      blank: "không được để trống"
+      too_long: "quá dài (tối đa %{count} ký tự)"
+      too_short: "quá ngắn (tối thiểu %{count} ký tự)"
+      wrong_length: "độ dài không đúng (phải là %{count} ký tự)"
+      not_a_number: "không phải là số"
+      not_an_integer: "phải là số nguyên"
+      greater_than: "phải lớn hơn %{count}"
+      greater_than_or_equal_to: "phải lớn hơn hoặc bằng %{count}"
+      equal_to: "phải bằng %{count}"
+      less_than: "phải nhỏ hơn %{count}"
+      less_than_or_equal_to: "phải nhỏ hơn hoặc bằng %{count}"
+      other_than: "phải khác %{count}"
+      odd: "phải là số lẻ"
+      even: "phải là số chẵn"
+      taken: "đã được sử dụng"
+      record_invalid: "Có lỗi: %{errors}"
