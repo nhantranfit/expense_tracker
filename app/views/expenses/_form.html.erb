@@ -1,37 +1,39 @@
-<%= form_with(model: expense, local: true) do |form| %>
+<%= form_with(model: expense, local: true, html: { class: "max-w-xl mx-auto p-6 bg-gray-900 text-white rounded shadow" }) do |form| %>
   <% if expense.errors.any? %>
-    <div style="color: red;">
-      <h3><%= pluralize(expense.errors.count, "lỗi") %>:</h3>
-      <ul>
+    <div class="mb-4 p-4 border border-red-400 bg-red-900 text-red-200 rounded">
+      <h3 class="font-semibold mb-2"><%= pluralize(expense.errors.count, "lỗi") %>:</h3>
+      <ul class="list-disc list-inside text-sm">
         <% expense.errors.full_messages.each do |msg| %>
           <li><%= msg %></li>
         <% end %>
       </ul>
     </div>
   <% end %>
-
-  <div>
-    <%= form.label :spent_on, "Ngày chi tiêu" %><br>
-    <%= form.date_field :spent_on %>
+  <div class="mb-4">
+    <%= form.label :spent_on, "📅 Ngày chi tiêu", class: "block mb-1 text-sm font-medium text-orange-300" %>
+    <%= form.date_field :spent_on, class: "w-full px-3 py-2 rounded bg-gray-800 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-orange-500" %>
+    <%= form_error_message(expense, :spent_on) %>
   </div>
 
-  <div>
-    <%= form.label :title, "Món" %><br>
-    <%= form.text_field :title %>
+  <div class="mb-4">
+    <%= form.label :title, "🍜 Món", class: "block mb-1 text-sm font-medium text-orange-300" %>
+    <%= form.text_field :title, class: "w-full px-3 py-2 rounded bg-gray-800 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-orange-500" %>
+    <%= form_error_message(expense, :title) %>
   </div>
 
-  <div>
-    <%= form.label :amount, "Số tiền (₫)" %><br>
-    <%= form.number_field :amount, step: 1000 %>
+  <div class="mb-4">
+    <%= form.label :amount, "💰 Số tiền (₫)", class: "block mb-1 text-sm font-medium text-orange-300" %>
+    <%= form.number_field :amount, step: 1000, class: "w-full px-3 py-2 rounded bg-gray-800 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-orange-500" %>
+    <%= form_error_message(expense, :amount) %>
   </div>
 
-  <div>
-    <%= form.label :note, "Ghi chú" %><br>
-    <%= form.text_area :note, rows: 3 %>
+  <div class="mb-4">
+    <%= form.label :note, "📝 Ghi chú", class: "block mb-1 text-sm font-medium text-orange-300" %>
+    <%= form.text_area :note, rows: 3, class: "w-full px-3 py-2 rounded bg-gray-800 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-orange-500" %>
   </div>
 
-  <div style="margin-top: 1em;">
-    <%= form.submit %>
-    <%= link_to "⬅ Quay lại", expenses_path %>
+  <div class="flex items-center justify-between mt-6">
+    <%= form.submit "💾 Lưu", class: "bg-orange-500 hover:bg-orange-600 text-white font-semibold px-5 py-2 rounded shadow" %>
+    <%= link_to "⬅ Quay lại", expenses_path, class: "text-orange-300 hover:underline text-sm" %>
   </div>
 <% end %>
