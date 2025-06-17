@@ -16,7 +16,7 @@ class ExpensesController < ApplicationController
     if @expense.save
       redirect_to expenses_path, notice: "Đã thêm chi tiêu thành công!"
     else
-      render :new, alert: "Có lỗi khi thêm chi tiêu!"
+      render :new, status: :unprocessable_entity
     end
   end
 
