@@ -1,0 +1,47 @@
+<div class="max-w-6xl mx-auto p-6 bg-gray-900 min-h-screen text-white">
+  <div class="flex justify-between items-center mb-6">
+    <h2 class="text-3xl font-bold text-orange-400">📂 Danh mục chi tiêu</h2>
+    <%= link_to "➕ Thêm danh mục", new_category_path,
+        class: "bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded shadow" %>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <% @categories.each do |category| %>
+      <div class="bg-gray-800 p-6 rounded-lg border border-gray-700 hover:border-gray-600 transition-colors">
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center">
+            <div class="w-4 h-4 rounded-full mr-3" style="background-color: <%= category.color %>"></div>
+            <h3 class="text-xl font-semibold text-white"><%= category.name %></h3>
+          </div>
+          <div class="flex space-x-2">
+            <%= link_to "✏️", edit_category_path(category),
+                class: "text-orange-400 hover:text-orange-300" %>
+            <%= link_to "🗑️", category_path(category),
+                method: :delete,
+                data: { turbo: false, confirm: "Bạn chắc không?" },
+                class: "text-red-400 hover:text-red-300" %>
+          </div>
+        </div>
+
+        <div class="space-y-2 text-sm text-gray-300">
+          <p>📊 Số chi tiêu: <%= category.expenses.count %></p>
+          <p>💰 Tổng: <%= number_with_delimiter(category.expenses.sum(:amount), delimiter: ",") %> ₫</p>
+          <% if category.budgets.any? %>
+            <p>📋 Ngân sách: <%= category.budgets.count %> thiết lập</p>
+          <% end %>
+        </div>
+
+        <div class="mt-4 pt-4 border-t border-gray-700">
+          <%= link_to "👁️ Xem chi tiết", category_path(category),
+              class: "text-orange-400 hover:text-orange-300 text-sm" %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+
+  <% if @categories.empty? %>
+    <div class="text-center py-12">
+      <p class="text-gray-400 text-lg">Chưa có danh mục nào. Hãy tạo danh mục đầu tiên!</p>
+    </div>
+  <% end %>
+</div>
