@@ -22,6 +22,13 @@
   </div>
 
   <div class="mb-4">
+    <%= form.label :category_id, "📂 Danh mục", class: "block mb-1 text-sm font-medium text-orange-300" %>
+    <%= form.collection_select :category_id, @categories, :id, :name,
+        { prompt: "Chọn danh mục..." },
+        { class: "w-full px-3 py-2 rounded bg-gray-800 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-orange-500" } %>
+  </div>
+
+  <div class="mb-4">
     <%= form.label :amount, "💰 Số tiền (₫)", class: "block mb-1 text-sm font-medium text-orange-300" %>
     <%= form.number_field :amount, step: 1000, class: "w-full px-3 py-2 rounded bg-gray-800 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-orange-500" %>
     <%= form_error_message(expense, :amount) %>
