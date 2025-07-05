@@ -1,0 +1,126 @@
+<div class="max-w-7xl mx-auto p-6 bg-gray-900 min-h-screen text-white">
+  <h1 class="text-4xl font-bold mb-8 text-orange-400">📊 Dashboard</h1>
+
+  <!-- Stats Cards -->
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <div class="bg-gray-800 p-6 rounded-lg border border-gray-700">
+      <div class="flex items-center">
+        <div class="p-3 rounded-full bg-red-500 bg-opacity-20">
+          <svg class="w-6 h-6 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1"></path>
+          </svg>
+        </div>
+        <div class="ml-4">
+          <p class="text-sm font-medium text-gray-400">Tổng chi tiêu</p>
+          <p class="text-2xl font-semibold text-white"><%= number_with_delimiter(@total_expenses, delimiter: ",") %> ₫</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-gray-800 p-6 rounded-lg border border-gray-700">
+      <div class="flex items-center">
+        <div class="p-3 rounded-full bg-blue-500 bg-opacity-20">
+          <svg class="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+          </svg>
+        </div>
+        <div class="ml-4">
+          <p class="text-sm font-medium text-gray-400">Tháng này</p>
+          <p class="text-2xl font-semibold text-white"><%= number_with_delimiter(@monthly_expenses, delimiter: ",") %> ₫</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-gray-800 p-6 rounded-lg border border-gray-700">
+      <div class="flex items-center">
+        <div class="p-3 rounded-full bg-green-500 bg-opacity-20">
+          <svg class="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"></path>
+          </svg>
+        </div>
+        <div class="ml-4">
+          <p class="text-sm font-medium text-gray-400">Tuần này</p>
+          <p class="text-2xl font-semibold text-white"><%= number_with_delimiter(@weekly_expenses, delimiter: ",") %> ₫</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="bg-gray-800 p-6 rounded-lg border border-gray-700">
+      <div class="flex items-center">
+        <div class="p-3 rounded-full bg-yellow-500 bg-opacity-20">
+          <svg class="w-6 h-6 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+        </div>
+        <div class="ml-4">
+          <p class="text-sm font-medium text-gray-400">Hôm nay</p>
+          <p class="text-2xl font-semibold text-white"><%= number_with_delimiter(@today_expenses, delimiter: ",") %> ₫</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Charts and Lists -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+    <!-- Monthly Chart -->
+    <div class="bg-gray-800 p-6 rounded-lg border border-gray-700">
+      <h3 class="text-xl font-semibold mb-4 text-orange-300">📈 Chi tiêu theo tháng</h3>
+      <div class="space-y-3">
+        <% @expenses_by_month.first(6).each do |month, amount| %>
+          <div class="flex items-center justify-between">
+            <span class="text-gray-300"><%= month %></span>
+            <span class="text-orange-400 font-medium"><%= number_with_delimiter(amount, delimiter: ",") %> ₫</span>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Recent Expenses -->
+    <div class="bg-gray-800 p-6 rounded-lg border border-gray-700">
+      <h3 class="text-xl font-semibold mb-4 text-orange-300">🕒 Chi tiêu gần đây</h3>
+      <div class="space-y-3">
+        <% @recent_expenses.each do |expense| %>
+          <div class="flex items-center justify-between p-3 bg-gray-700 rounded">
+            <div>
+              <p class="font-medium text-white"><%= expense.title %></p>
+              <p class="text-sm text-gray-400"><%= expense.spent_on.strftime("%d/%m/%Y") %></p>
+            </div>
+            <span class="text-orange-400 font-medium"><%= number_with_delimiter(expense.amount, delimiter: ",") %> ₫</span>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Top Expenses -->
+    <div class="bg-gray-800 p-6 rounded-lg border border-gray-700">
+      <h3 class="text-xl font-semibold mb-4 text-orange-300">🔥 Chi tiêu cao nhất</h3>
+      <div class="space-y-3">
+        <% @top_expenses.each_with_index do |expense, index| %>
+          <div class="flex items-center justify-between p-3 bg-gray-700 rounded">
+            <div class="flex items-center">
+              <span class="text-2xl mr-3"><%= ["🥇", "🥈", "🥉", "4️⃣", "5️⃣"][index] %></span>
+              <div>
+                <p class="font-medium text-white"><%= expense.title %></p>
+                <p class="text-sm text-gray-400"><%= expense.spent_on.strftime("%d/%m/%Y") %></p>
+              </div>
+            </div>
+            <span class="text-red-400 font-medium"><%= number_with_delimiter(expense.amount, delimiter: ",") %> ₫</span>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <!-- Quick Actions -->
+    <div class="bg-gray-800 p-6 rounded-lg border border-gray-700">
+      <h3 class="text-xl font-semibold mb-4 text-orange-300">⚡ Hành động nhanh</h3>
+      <div class="space-y-3">
+        <%= link_to "➕ Thêm chi tiêu mới", new_expense_path,
+            class: "block w-full text-center bg-orange-500 hover:bg-orange-600 text-white py-3 px-4 rounded font-medium transition-colors" %>
+        <%= link_to "📋 Xem tất cả chi tiêu", expenses_path,
+            class: "block w-full text-center bg-gray-600 hover:bg-gray-500 text-white py-3 px-4 rounded font-medium transition-colors" %>
+        <%= link_to "📊 Xuất báo cáo", "#",
+            class: "block w-full text-center bg-blue-500 hover:bg-blue-600 text-white py-3 px-4 rounded font-medium transition-colors" %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -24,7 +24,51 @@
 
   </head>
 
-  <body>
+  <body class="bg-[#0d1117] text-white">
+    <!-- Navigation -->
+    <nav class="bg-gray-800 border-b border-gray-700">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex items-center justify-between h-16">
+          <div class="flex items-center">
+            <div class="flex-shrink-0">
+              <h1 class="text-xl font-bold text-orange-400">💰 Expense Tracker</h1>
+            </div>
+            <div class="hidden md:block">
+              <div class="ml-10 flex items-baseline space-x-4">
+                <%= link_to "📊 Dashboard", root_path,
+                    class: "text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium #{current_page?(root_path) ? 'bg-gray-700 text-white' : ''}" %>
+                <%= link_to "📋 Chi tiêu", expenses_path,
+                    class: "text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium #{controller_name == 'expenses' ? 'bg-gray-700 text-white' : ''}" %>
+                <%= link_to "📂 Danh mục", categories_path,
+                    class: "text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium #{controller_name == 'categories' ? 'bg-gray-700 text-white' : ''}" %>
+                <%= link_to "💰 Ngân sách", budgets_path,
+                    class: "text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium #{controller_name == 'budgets' ? 'bg-gray-700 text-white' : ''}" %>
+              </div>
+            </div>
+          </div>
+          <div class="hidden md:block">
+            <div class="ml-4 flex items-center md:ml-6">
+              <%= link_to "➕ Thêm chi tiêu", new_expense_path,
+                  class: "bg-orange-500 hover:bg-orange-600 text-white px-4 py-2 rounded text-sm font-medium" %>
+            </div>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Flash Messages -->
+    <% if notice %>
+      <div class="bg-green-500 text-white px-4 py-3 rounded relative" role="alert">
+        <span class="block sm:inline"><%= notice %></span>
+      </div>
+    <% end %>
+
+    <% if alert %>
+      <div class="bg-red-500 text-white px-4 py-3 rounded relative" role="alert">
+        <span class="block sm:inline"><%= alert %></span>
+      </div>
+    <% end %>
+
     <%= yield %>
   </body>
 </html>

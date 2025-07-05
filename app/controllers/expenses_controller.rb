@@ -1,8 +1,12 @@
 class ExpensesController < ApplicationController
   before_action :expense, only: [:show, :edit, :update, :destroy]
+  before_action :set_categories, only: [:new, :create, :edit]
+
   def index
-    @expenses = Expense.order(spent_on: :desc)
-    @grouped_expenses = Expense.order(spent_on: :desc).group_by(&:spent_on)
+    @expenses = Expense.includes(:category).order(spent_on: :desc)
+    @grouped_expenses = @expenses.group_by(&:spent_on)
+    @categories = Category.ordered
+    @total_expenses = @expenses.sum(:amount)
   end
 
   def new
@@ -29,6 +33,7 @@ class ExpensesController < ApplicationController
     if @expense.update(expense_params)
       redirect_to expenses_path, notice: "Đã cập nhật chi tiêu."
     else
+      @categories = Category.ordered
       render :edit, status: :unprocessable_entity
     end
   end
@@ -40,8 +45,12 @@ class ExpensesController < ApplicationController
 
   private
 
+  def set_categories
+    @categories = Category.ordered
+  end
+
   def expense_params
-    params.require(:expense).permit(:title, :amount, :note, :spent_on)
+    params.require(:expense).permit(:title, :amount, :note, :spent_on, :category_id)
   end
 
   def expense
