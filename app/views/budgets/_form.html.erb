@@ -1,0 +1,32 @@
+d<%= form_with(model: budget, local: true, html: { class: "max-w-xl mx-auto p-6 bg-gray-900 text-white rounded shadow" }) do |form| %>
+  <% if budget.errors.any? %>
+    <div class="mb-4 p-4 border border-red-400 bg-red-900 text-red-200 rounded">
+      <h3 class="font-semibold mb-2"><%= pluralize(budget.errors.count, "lỗi") %>:</h3>
+      <ul class="list-disc list-inside text-sm">
+        <% budget.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="mb-4">
+    <%= form.label :category_id, "Danh mục", class: "block mb-1 text-sm font-medium text-orange-300" %>
+    <%= form.collection_select :category_id, @categories, :id, :name, { prompt: "Chọn danh mục..." }, { class: "w-full px-3 py-2 rounded bg-gray-800 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-orange-500" } %>
+  </div>
+
+  <div class="mb-4">
+    <%= form.label :amount, "Hạn mức (₫)", class: "block mb-1 text-sm font-medium text-orange-300" %>
+    <%= form.number_field :amount, step: 1000, class: "w-full px-3 py-2 rounded bg-gray-800 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-orange-500" %>
+  </div>
+
+  <div class="mb-4">
+    <%= form.label :period, "Chu kỳ", class: "block mb-1 text-sm font-medium text-orange-300" %>
+    <%= form.select :period, options_for_select([["Tuần", "weekly"], ["Tháng", "monthly"], ["Năm", "yearly"]], budget.period), { prompt: "Chọn chu kỳ..." }, class: "w-full px-3 py-2 rounded bg-gray-800 border border-gray-600 text-white focus:outline-none focus:ring-2 focus:ring-orange-500" %>
+  </div>
+
+  <div class="flex items-center justify-between mt-6">
+    <%= form.submit "💾 Lưu", class: "bg-orange-500 hover:bg-orange-600 text-white font-semibold px-5 py-2 rounded shadow" %>
+    <%= link_to "⬅ Quay lại", budgets_path, class: "text-orange-300 hover:underline text-sm" %>
+  </div>
+<% end %>

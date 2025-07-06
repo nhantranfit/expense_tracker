@@ -41,6 +41,12 @@ gem "thruster", require: false
 
 gem 'byebug', '~> 12.0'
 
+# Reporting gems
+gem 'wicked_pdf'
+gem 'wkhtmltopdf-binary'
+gem 'axlsx'
+gem 'axlsx_rails'
+
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
 # gem "image_processing", "~> 1.2"
 

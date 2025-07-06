@@ -1,0 +1,135 @@
+wb = xlsx_package.workbook
+
+# Styles
+header_style = wb.styles.add_style(
+  bg_color: "2563eb",
+  fg_color: "FFFFFF",
+  b: true,
+  alignment: { horizontal: :center }
+)
+
+subheader_style = wb.styles.add_style(
+  bg_color: "f3f4f6",
+  b: true,
+  alignment: { horizontal: :center }
+)
+
+currency_style = wb.styles.add_style(
+  num_fmt: 44, # Currency format
+  alignment: { horizontal: :right }
+)
+
+date_style = wb.styles.add_style(
+  num_fmt: 14, # Date format
+  alignment: { horizontal: :center }
+)
+
+# Summary Sheet
+wb.add_worksheet(name: "Tổng quan") do |sheet|
+  # Title
+  sheet.add_row ["Báo cáo chi tiêu"], style: header_style
+  sheet.add_row ["Từ #{@start_date.strftime('%d/%m/%Y')} đến #{@end_date.strftime('%d/%m/%Y')}"], style: subheader_style
+  sheet.add_row [] # Empty row
+
+  # Summary data
+  sheet.add_row ["Tổng chi tiêu", @total_expenses], style: [nil, currency_style]
+  sheet.add_row ["Số danh mục", @expenses_by_category.count]
+  sheet.add_row ["Số ngày", (@end_date - @start_date).to_i + 1]
+  sheet.add_row ["Trung bình/ngày", @total_expenses / [(@end_date - @start_date).to_i + 1, 1].max], style: [nil, currency_style]
+
+  sheet.add_row [] # Empty row
+
+  # Category breakdown
+  sheet.add_row ["Chi tiêu theo danh mục"], style: subheader_style
+  sheet.add_row ["Danh mục", "Số tiền", "Phần trăm"], style: header_style
+
+  @expenses_by_category.each do |category, amount|
+    percentage = @total_expenses > 0 ? (amount.to_f / @total_expenses * 100) : 0
+    sheet.add_row [
+      category.name,
+      amount,
+      percentage
+    ], style: [nil, currency_style, wb.styles.add_style(num_fmt: 10)] # Percentage format
+  end
+end
+
+# Detailed Expenses Sheet
+wb.add_worksheet(name: "Chi tiết") do |sheet|
+  # Title
+  sheet.add_row ["Chi tiết từng khoản chi"], style: header_style
+  sheet.add_row ["Từ #{@start_date.strftime('%d/%m/%Y')} đến #{@end_date.strftime('%d/%m/%Y')}"], style: subheader_style
+  sheet.add_row [] # Empty row
+
+  # Headers
+  sheet.add_row [
+    "Ngày",
+    "Danh mục",
+    "Mô tả",
+    "Số tiền"
+  ], style: header_style
+
+  # Data
+  @expenses.each do |expense|
+    sheet.add_row [
+      expense.spent_on,
+      expense.category&.name || "Không phân loại",
+      expense.title,
+      expense.amount
+    ], style: [date_style, nil, nil, currency_style]
+  end
+
+  # Total row
+  sheet.add_row [
+    "TỔNG CỘNG",
+    "",
+    "",
+    @expenses.sum(:amount)
+  ], style: [wb.styles.add_style(b: true), nil, nil, wb.styles.add_style(b: true, num_fmt: 44)]
+end
+
+# Budget Report Sheet (if budgets exist)
+if @budget_report.any?
+  wb.add_worksheet(name: "Ngân sách") do |sheet|
+    # Title
+    sheet.add_row ["Báo cáo ngân sách"], style: header_style
+    sheet.add_row ["Từ #{@start_date.strftime('%d/%m/%Y')} đến #{@end_date.strftime('%d/%m/%Y')}"], style: subheader_style
+    sheet.add_row [] # Empty row
+
+    # Headers
+    sheet.add_row [
+      "Danh mục",
+      "Ngân sách",
+      "Đã chi",
+      "Còn lại",
+      "Phần trăm sử dụng",
+      "Trạng thái"
+    ], style: header_style
+
+    # Data
+    @budget_report.each do |budget|
+      status = if budget[:exceeded]
+        "Vượt quá"
+      elsif budget[:percentage_used] >= 80
+        "Cảnh báo"
+      else
+        "Tốt"
+      end
+
+      sheet.add_row [
+        budget[:category].name,
+        budget[:budget_amount],
+        budget[:spent_amount],
+        budget[:remaining_amount],
+        budget[:percentage_used],
+        status
+      ], style: [
+        nil,
+        currency_style,
+        currency_style,
+        currency_style,
+        wb.styles.add_style(num_fmt: 10), # Percentage
+        nil
+      ]
+    end
+  end
+end

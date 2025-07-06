@@ -18,4 +18,12 @@ Rails.application.routes.draw do
   resources :budgets
   resources :dashboard, only: [:index]
 
+  # Reports routes
+  resources :reports, only: [:index] do
+    collection do
+      get :export_pdf
+      get :export_excel
+    end
+  end
+
 end
